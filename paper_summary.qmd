@@ -14,7 +14,7 @@ format:
 
 ## Introduction
 
-Real interest rates have fallen roughly four percentage points since the mid-1980s. We show that the collapse in birth rates around 1970 accounts for a significant share of this decline: the baby boomers — the last large birth cohort — accumulate savings ahead of retirement, driving down interest rates to a trough near zero around 2028, overshooting the new long-run equilibrium, itself lower due to negative population growth. We use a large OLG model with CES production calibrated to Germany, and show that the same demographic mechanism, fed with observed fertility profiles, generates qualitatively similar transitions for the US, Japan, and China. Relative to Lu and Teulings (2017), this replication omits the land extension and the bequest motive.
+Real interest rates have fallen roughly four percentage points since the mid-1980s. We show that the collapse in birth rates around 1970 accounts for a significant share of this decline: the baby boomers — the last large birth cohort — accumulate savings ahead of retirement, driving down interest rates to a trough near zero around 2028, overshooting the new long-run equilibrium, itself lower due to negative population growth. We use a large OLG model with CES production calibrated to Germany, and show that the same demographic mechanism, fed with observed fertility profiles, generates qualitatively similar transitions for the US, Japan, and China. Relative to Lu and Teulings (2015), this replication omits the land extension and the bequest motive.
 
 ## Demographic Transition
 
