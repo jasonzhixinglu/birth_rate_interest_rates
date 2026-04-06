@@ -1,0 +1,51 @@
+---
+title: "Birth Rate Collapse and Its Effect on Interest Rates"
+author: "Jason Lu and Coen Teulings"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+---
+
+## Abstract
+
+We study the macroeconomic consequences of the post-1970 fertility collapse
+using a large overlapping-generations model with CES production calibrated to
+Germany. A two-parameter fertility shock — capturing the permanent transition
+from a high to a low Total Fertility Rate — drives cohort-size dynamics.
+Solving for the transitional interest rate path via an iterative algorithm,
+we find that real interest rates fall steeply from around 1985, trough near
+2035 overshooting the new balanced growth path level, and gradually recover
+thereafter.
+
+## Introduction
+
+## Demographic Module
+
+### Birth Rate Equation
+
+### Cohort Size Simulation
+
+### Germany: Age Distribution
+
+## OLG Model
+
+### Households
+
+### Firms
+
+### Equilibrium and BGP
+
+### Transitional Dynamics Algorithm
+
+## Results: Germany Baseline
+
+### Transitional Interest Rate Path
+
+### Decomposition
+
+## Conclusion
+
+## References
