@@ -18,7 +18,7 @@ Real interest rates have fallen roughly four percentage points since the mid-198
 
 ### The Fertility Shock
 
-The total fertility rate in Germany fell from approximately 2.5 in 1965 to below 1.5 by the mid-1970s, with similar collapses occurring contemporaneously across France, Italy, Japan, the United Kingdom, and the United States.
+The total fertility rate in Germany fell from approximately 2.5 in 1965 to below 1.5 by the mid-1970s, with similar falls in other advanced economies and China.
 
 ![Total fertility rate, Germany 1950–2020.](figures/tfr_germany.png){fig-align="center" width="80%"}
 
