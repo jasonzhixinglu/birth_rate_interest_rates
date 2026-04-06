@@ -5,9 +5,9 @@ from .firm import k_from_r, wage_from_k, r_from_k
 
 
 def solve_transition(cohort_sizes, years, r_init, r_terminal,
-                      J=75, chi=20, psi=65,
-                      alpha=0.5, sigma=0.4, delta=0.1,
-                      beta=0.99, theta=2, gamma=0.0,
+                      J=80, chi=20, psi=60,
+                      alpha=0.33, sigma=0.4, delta=0.05,
+                      beta=0.946, theta=2.0, gamma=0.015,
                       phi=0.05, max_iter=2000, tol=1e-6):
     """
     Iterative algorithm to solve for the transitional interest rate path.
@@ -32,9 +32,8 @@ def solve_transition(cohort_sizes, years, r_init, r_terminal,
     r_init, r_terminal : float
         Initial and terminal (BGP) interest rates for the linear guess.
     gamma : float
-        TFP growth rate. When non-zero the Euler equation and wage paths are
-        rescaled: households solve in detrended (efficiency-unit) terms using
-        beta_eff = beta*(1+gamma)^{1-theta} and r_eff = (1+r)/(1+gamma)-1.
+        TFP growth rate. Enters through effective discount factor only:
+        beta_eff = beta*(1+gamma)^{1-theta}. Nominal r is passed directly.
     phi : float
         Damping weight on the implied interest rate update.
 
@@ -93,19 +92,10 @@ def solve_transition(cohort_sizes, years, r_init, r_terminal,
             r_cohort = r_path[clipped]
             w_cohort = w_path[clipped]
 
-            if gamma != 0.0:
-                # Rescale Euler: detrended interest rate
-                r_cohort_eff = (1.0 + r_cohort) / (1.0 + gamma) - 1.0
-                # w_cohort stays in efficiency units (already from wage_from_k)
-                w_cohort_eff = w_cohort
-            else:
-                r_cohort_eff = r_cohort
-                w_cohort_eff = w_cohort
-
-            sol = solve_household(r_cohort_eff, w_cohort_eff,
+            sol = solve_household(r_cohort, w_cohort,
                                    chi=chi, psi=psi, J=J,
                                    beta=beta_eff, theta=theta)
-            cohort_assets[by] = sol['assets']   # in efficiency units when gamma != 0
+            cohort_assets[by] = sol['assets']
 
         # --- Steps c & d: aggregate and invert to r_implied ---
         r_implied = r_path.copy()
@@ -121,20 +111,12 @@ def solve_transition(cohort_sizes, years, r_init, r_terminal,
                     continue
                 n     = get_cohort_size(by)
                 a_age = cohort_assets[by][age]
-
-                if gamma != 0.0:
-                    # Convert detrended assets to nominal: multiply by A_{by+age}
-                    a_age = a_age * (1.0 + gamma) ** (by + age - y0)
-
                 total_assets += n * a_age
                 if chi <= age < psi:
                     total_labor += n
 
             if total_labor > 0.0 and total_assets > 0.0:
                 k_implied = total_assets / total_labor
-                if gamma != 0.0:
-                    # Convert nominal capital per worker to efficiency units
-                    k_implied /= (1.0 + gamma) ** (t - y0)
                 r_implied[t_idx] = r_from_k(k_implied, alpha, sigma, delta)
             # else: keep r_implied[t_idx] = r_path[t_idx] (no update)
 

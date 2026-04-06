@@ -12,15 +12,17 @@ def calibrate_germany(
     shock_year=1970,
     base_year=1900,
     end_year=2200,
-    J=75,
+    J=80,
+    chi=20,
+    psi=60,
     F_low=20,
     F_high=30,
-    alpha=0.5,
+    alpha=0.33,
     sigma=0.4,
-    delta=0.1,
-    beta=0.99,
-    theta=2,
-    gamma=0.0,
+    delta=0.05,
+    beta=0.946,
+    theta=2.0,
+    gamma=0.015,
 ):
     """
     Return calibrated parameters for the Germany baseline.
