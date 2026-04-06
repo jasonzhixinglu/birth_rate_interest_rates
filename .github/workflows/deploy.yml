@@ -25,8 +25,8 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Render paper_summary.qmd
-        run: quarto render paper_summary.qmd --output-dir docs
+      - name: Render index.qmd
+        run: quarto render index.qmd --output-dir docs
 
       - name: Commit and push docs/
         run: |
