@@ -1,6 +1,8 @@
 ---
 title: "Birth Rate Collapse and Its Effect on Interest Rates"
-author: "Lu, J. and Teulings, C. (2015). Fertility Rates and the Age Distribution. University of Cambridge Working Paper. First version: September 2015, last edited: October 2017."
+author:
+  - Jason Lu
+  - Coen Teulings
 format:
   html:
     toc: true
@@ -82,7 +84,7 @@ Market clearing requires $\sum_{\tau} N_\tau a_{\tau,t} = K_t$ in every period. 
 
 Starting from 3.5 percent in the early 1980s, the model-implied rate falls to near zero by 2028 — a peak-to-trough decline of roughly three percentage points — before recovering to a new balanced-growth-path level of approximately 1.5 percent. The brief overshoot below the new equilibrium reflects the lag between peak saving pressure and the onset of dissaving by the large pre-shock cohort.
 
-![Germany baseline: model-implied real interest rate, 1980–2080.](figures/germany_baseline.png){fig-align="center" width="80%"}
+![Germany baseline: model-implied interest rate, 1950–2050.](figures/germany_baseline.png){fig-align="center" width="80%"}
 
 ### Cross-Country Comparison
 
@@ -92,7 +94,7 @@ Countries with an earlier or sharper fertility decline exhibit an earlier or dee
 
 ## Conclusion
 
-The post-1970 fertility collapse accounts for approximately three percentage points of the observed decline in real interest rates across advanced economies, with a trough near zero around 2028. After that point, the gradual exit of the large pre-shock cohort from the saving pool allows rates to recover toward a new balanced-growth-path level of 1.5 percent. The current era of depressed rates is therefore partly transitional, and policy frameworks premised on their permanence may require revision.
+The post-1970 fertility collapse accounts for approximately three percentage points of the observed decline in real interest rates across advanced economies, with a trough near zero around 2028. After that point, the gradual exit of the large pre-shock cohort from the saving pool allows rates to recover toward a new, lower balanced-growth-path level. The current era of depressed rates is therefore partly transitional, and policy frameworks premised on their permanence may require revision.
 
 ## References
 
