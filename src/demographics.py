@@ -73,8 +73,8 @@ def compute_age_distribution(cohort_sizes, years, eval_year, J=75):
 
 if __name__ == '__main__':
     J, F_low, F_high = 75, 20, 30
-    b_high = 2.5 / (F_high - F_low)
-    b_low  = 1.4 / (F_high - F_low)
+    b_high = 2.5 / (2 * (F_high - F_low))
+    b_low  = 1.4 / (2 * (F_high - F_low))
     result = simulate_cohort_sizes(
         b_high=b_high, b_low=b_low,
         shock_year=1970, base_year=1900, end_year=2200,
