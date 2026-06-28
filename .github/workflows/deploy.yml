@@ -1,19 +1,32 @@
-name: Render and Deploy
+name: Build & Deploy Dashboard
+
+# The interactive Vite dashboard (in dashboard/) is the GitHub Pages site.
+# The Quarto paper is rendered into dashboard/public/paper/ so it ships at /paper/.
+#
+# NOTE: in the repo Settings → Pages, set "Source" to "GitHub Actions"
+# (this replaces the old "Deploy from branch → docs/" setup).
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
+      # ── Render the Quarto paper into the dashboard's public/paper/ ──
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
@@ -25,13 +38,42 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Render index.qmd
-        run: quarto render index.qmd --output-dir docs
+      - name: Install TinyTeX (for PDF)
+        run: quarto install tinytex --no-prompt
 
-      - name: Commit and push docs/
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add docs/
-          git commit -m "Render Quarto doc [skip ci]" || echo "Nothing to commit"
-          git push
+      - name: Regenerate dashboard data from the model
+        run: python dashboard/scripts/export_data.py
+
+      - name: Render paper (HTML + PDF)
+        run: quarto render index.qmd --output-dir dashboard/public/paper
+
+      # ── Build the Vite dashboard ──
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: dashboard/package-lock.json
+
+      - name: Install dashboard dependencies
+        working-directory: dashboard
+        run: npm ci
+
+      - name: Build dashboard
+        working-directory: dashboard
+        run: npm run build
+        env:
+          GITHUB_ACTIONS: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dashboard/dist/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

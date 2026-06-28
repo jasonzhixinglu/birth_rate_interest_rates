@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.vite/
+*.local
+# Quarto paper is rendered into here by CI — not committed
+public/paper/
+# The repo-root .gitignore is a Python template that ignores `lib/`;
+# re-include our frontend source lib directory.
+!src/lib/
+!src/lib/**
