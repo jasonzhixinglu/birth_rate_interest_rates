@@ -36,8 +36,11 @@ from src.firm import k_from_r, wage_from_k
 OUT_DIR = ROOT / "dashboard" / "public" / "data"
 
 # Shared structural parameters (Germany baseline; same across countries).
-BASE = dict(alpha=0.33, sigma=0.4, delta=0.05, beta=0.946,
-            theta=2.0, gamma=0.015, J=80, chi=20, psi=60)
+# chi=20 labour-market entry, psi=65 retirement -> working age 20-65.
+# beta=0.9634 is calibrated (globally, on Germany) so the pre-shock BGP
+# rate is r_init=3.0%.
+BASE = dict(alpha=0.33, sigma=0.4, delta=0.05, beta=0.9634,
+            theta=2.0, gamma=0.015, J=80, chi=20, psi=65)
 F_LOW, F_HIGH = 20, 30
 
 # Calendar window shown in the dashboard.
@@ -111,6 +114,7 @@ def solve_country(cfg):
     ages = list(range(J))
     snapshots = {}
     pop_max = asset_pc_max = wealth_max = 0.0
+    k_by_year = {}   # capital per worker = aggregate assets / workers (model k)
 
     for t in snap_years:
         pop = np.zeros(J)
@@ -124,17 +128,25 @@ def solve_country(cfg):
         pop_max = max(pop_max, float(pop.max()))
         asset_pc_max = max(asset_pc_max, float(asset_pc.max()))
         wealth_max = max(wealth_max, float(wealth.max()))
+        workers = float(pop[chi:psi].sum())
+        k_by_year[t] = float(wealth.sum() / workers) if workers > 0 else 0.0
         snapshots[str(t)] = {
             "pop": round_list(pop, 4),
             "assetPc": round_list(asset_pc, 5),
         }
 
-    # r-path over the shown window, in percent
+    # r-path and capital-per-worker path over the shown window
     mask = (years >= SNAP_START) & (years <= SNAP_END)
     r_series = [
         {"year": int(y), "r": round(float(r) * 100.0, 4)}
         for y, r in zip(years[mask], r_path[mask])
     ]
+    k_series = [{"year": int(y), "k": round(k_by_year[int(y)], 4)} for y in years[mask]]
+
+    # BGP capital-per-worker (firm side) at the two equilibrium rates
+    k_init = float(k_from_r(r_init, p["alpha"], p["sigma"], p["delta"]))
+    k_terminal = float(k_from_r(r_terminal, p["alpha"], p["sigma"], p["delta"]))
+    k_peak_year = max(k_by_year, key=k_by_year.get)
 
     trough_idx = int(np.argmin(r_path))
 
@@ -150,6 +162,9 @@ def solve_country(cfg):
         "gHigh": round(float(g_high) * 100, 3),
         "gLow": round(float(g_low) * 100, 3),
         "trough": {"year": int(years[trough_idx]), "value": round(float(r_path[trough_idx]) * 100, 3)},
+        "kInit": round(k_init, 4),
+        "kTerminal": round(k_terminal, 4),
+        "kPeak": {"year": int(k_peak_year), "value": round(k_by_year[k_peak_year], 4)},
         "J": J, "chi": chi, "psi": psi,
         "popMax": round(pop_max, 4),
         "assetPcMax": round(asset_pc_max, 5),
@@ -157,7 +172,7 @@ def solve_country(cfg):
         "snapStart": SNAP_START, "snapEnd": SNAP_END,
     }
 
-    return {"meta": meta, "ages": ages, "rPath": r_series, "snapshots": snapshots}
+    return {"meta": meta, "ages": ages, "rPath": r_series, "kPath": k_series, "snapshots": snapshots}
 
 
 def main():

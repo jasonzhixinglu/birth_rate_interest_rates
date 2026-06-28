@@ -4,11 +4,11 @@
       "slug": "germany",
       "name": "Germany",
       "color": "#6366f1",
-      "rInit": 3.512,
-      "rTerminal": 1.526,
+      "rInit": 3.006,
+      "rTerminal": 1.556,
       "trough": {
-        "year": 2028,
-        "value": 0.685
+        "year": 2031,
+        "value": 0.845
       },
       "shockYear": 1970
     },
@@ -16,11 +16,11 @@
       "slug": "usa",
       "name": "USA",
       "color": "#22d3ee",
-      "rInit": 3.512,
-      "rTerminal": 2.412,
+      "rInit": 3.006,
+      "rTerminal": 2.202,
       "trough": {
-        "year": 2027,
-        "value": 1.958
+        "year": 2030,
+        "value": 1.839
       },
       "shockYear": 1970
     },
@@ -28,11 +28,11 @@
       "slug": "japan",
       "name": "Japan",
       "color": "#34d399",
-      "rInit": 2.772,
-      "rTerminal": 1.526,
+      "rInit": 2.465,
+      "rTerminal": 1.556,
       "trough": {
-        "year": 2033,
-        "value": 1.026
+        "year": 2036,
+        "value": 1.131
       },
       "shockYear": 1975
     },
@@ -40,11 +40,11 @@
       "slug": "china",
       "name": "China",
       "color": "#fbbf24",
-      "rInit": 4.097,
-      "rTerminal": 2.002,
+      "rInit": 3.435,
+      "rTerminal": 1.903,
       "trough": {
-        "year": 2038,
-        "value": 1.104
+        "year": 2041,
+        "value": 1.166
       },
       "shockYear": 1980
     }
@@ -53,11 +53,11 @@
     "alpha": 0.33,
     "sigma": 0.4,
     "delta": 0.05,
-    "beta": 0.946,
+    "beta": 0.9634,
     "theta": 2.0,
     "gamma": 0.015,
     "J": 80,
     "chi": 20,
-    "psi": 60
+    "psi": 65
   }
 }

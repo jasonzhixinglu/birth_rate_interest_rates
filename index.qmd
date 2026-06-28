@@ -18,7 +18,7 @@ format:
 
 ## Introduction
 
-Real interest rates have fallen roughly four percentage points since the mid-1980s. We show that the collapse in birth rates around 1970 accounts for a significant share of this decline: the baby boomers — the last large birth cohort — accumulate savings ahead of retirement, driving down interest rates to a trough near zero around 2028, overshooting the new long-run equilibrium, itself lower due to negative population growth. We use a large OLG model with CES production calibrated to Germany, and show that the same demographic mechanism, fed with observed fertility profiles, generates qualitatively similar transitions for the US, Japan, and China. Relative to Lu and Teulings (2015), this replication omits the land extension and the bequest motive.
+Real interest rates have fallen roughly four percentage points since the mid-1980s. We show that the collapse in birth rates around 1970 accounts for a significant share of this decline: the baby boomers — the last large birth cohort — accumulate savings ahead of retirement, driving down interest rates to a trough below one percent around 2031, overshooting the new long-run equilibrium, itself lower due to negative population growth. We use a large OLG model with CES production calibrated to Germany, and show that the same demographic mechanism, fed with observed fertility profiles, generates qualitatively similar transitions for the US, Japan, and China. Relative to Lu and Teulings (2015), this replication omits the land extension and the bequest motive.
 
 ## Demographic Transition
 
@@ -68,37 +68,37 @@ $$r_t = \alpha \left(\frac{Y_t}{K_t}\right)^{1/\sigma}, \qquad w_t = (1-\alpha)\
 
 ### Equilibrium and Calibration
 
-Market clearing requires $\sum_{\tau} N_\tau a_{\tau,t} = K_t$ in every period. We solve for the transition path by iterating over interest-rate and wage sequences until this condition holds, starting from the pre-shock balanced growth path. The discount factor $\beta$ is calibrated to match an initial real interest rate of 3.5 percent; remaining parameters follow standard values from the literature.
+Market clearing requires $\sum_{\tau} N_\tau a_{\tau,t} = K_t$ in every period. We solve for the transition path by iterating over interest-rate and wage sequences until this condition holds, starting from the pre-shock balanced growth path. The discount factor $\beta$ is calibrated to match an initial real interest rate of 3.0 percent; remaining parameters follow standard values from the literature.
 
 | Parameter | Value | Description |
 |-----------|-------|-------------|
 | $\alpha$ | 0.33 | Capital share |
 | $\sigma$ | 0.4 | Elasticity of substitution |
 | $\delta$ | 0.05 | Depreciation rate |
-| $\beta$ | 0.946 | Discount factor (calibrated to $r_\text{init} = 3.5\%$) |
+| $\beta$ | 0.9634 | Discount factor (calibrated to $r_\text{init} = 3.0\%$) |
 | $\theta$ | 2.0 | Inverse EIS |
 | $\gamma$ | 0.015 | TFP growth rate |
 | $J$ | 80 | Lifespan (periods) |
 | $\chi$ | 20 | Age entering labour market |
-| $\psi$ | 60 | Retirement age |
+| $\psi$ | 65 | Retirement age |
 
 ## Results
 
 ### Germany Baseline
 
-Starting from 3.5 percent in the early 1980s, the model-implied rate falls to near zero by 2028 — a peak-to-trough decline of roughly three percentage points — before recovering to a new balanced-growth-path level of approximately 1.5 percent. The brief overshoot below the new equilibrium reflects the lag between peak saving pressure and the onset of dissaving by the large pre-shock cohort.
+Starting from 3.0 percent in the early 1980s, the model-implied rate falls to about 0.8 percent by 2031 — a peak-to-trough decline of roughly two percentage points — before recovering to a new balanced-growth-path level of approximately 1.6 percent. The brief overshoot below the new equilibrium reflects the lag between peak saving pressure and the onset of dissaving by the large pre-shock cohort. A retirement age of 65 (working span 20–65) shortens the retirement phase relative to a retirement age of 60, weakening the saving motive, so the decline is milder and the trough later and modestly positive.
 
 ![Germany baseline: model-implied interest rate, 1950–2050.](figures/germany_baseline.png){fig-align="center" width="80%"}
 
 ### Cross-Country Comparison
 
-Countries with an earlier or sharper fertility decline exhibit an earlier or deeper trough: Japan leads by approximately five years, while the United States shows a shallower path. All cross-country differences are captured using only country-specific cohort-size data and a common structural parameterisation.
+Countries with an earlier fertility decline trough sooner, and those with a sharper decline trough deeper relative to their starting point: the United States troughs earliest (2030) and shallowest, while China — with a later and larger fertility drop — troughs latest (2041). All cross-country differences are captured using only country-specific cohort-size data and a common structural parameterisation.
 
 ![Cross-country comparison: model-implied real interest rates.](figures/cross_country.png){fig-align="center" width="80%"}
 
 ## Conclusion
 
-The post-1970 fertility collapse accounts for approximately three percentage points of the observed decline in real interest rates across advanced economies, with a trough near zero around 2028. After that point, the gradual exit of the large pre-shock cohort from the saving pool allows rates to recover toward a new, lower balanced-growth-path level. The current era of depressed rates is therefore partly transitional, and policy frameworks premised on their permanence may require revision.
+The post-1970 fertility collapse accounts for approximately two percentage points of the observed decline in real interest rates across advanced economies, with a trough below one percent around 2031. After that point, the gradual exit of the large pre-shock cohort from the saving pool allows rates to recover toward a new, lower balanced-growth-path level. The current era of depressed rates is therefore partly transitional, and policy frameworks premised on their permanence may require revision.
 
 ## References
 

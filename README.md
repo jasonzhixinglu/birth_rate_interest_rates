@@ -4,7 +4,7 @@ Replication of Lu, J. and Teulings, C. (2015). Fertility Rates and the Age Distr
 
 ## Overview
 
-This project replicates the core quantitative results of Lu and Teulings (2015) in Python. The paper shows that the collapse in birth rates around 1970 across advanced economies can account for a significant share of the observed decline in real interest rates since the mid-1980s. The mechanism operates through life-cycle saving: the baby boomers — the last large birth cohort — accumulate savings ahead of retirement, driving down interest rates to a trough near zero around 2028 that overshoots the new long-run equilibrium. This replication omits the land extension and the bequest motive from the original paper.
+This project replicates the core quantitative results of Lu and Teulings (2015) in Python. The paper shows that the collapse in birth rates around 1970 across advanced economies can account for a significant share of the observed decline in real interest rates since the mid-1980s. The mechanism operates through life-cycle saving: the baby boomers — the last large birth cohort — accumulate savings ahead of retirement, driving down interest rates to a trough below one percent around 2031 that overshoots the new long-run equilibrium. This replication omits the land extension and the bequest motive from the original paper.
 
 ## Model structure
 
@@ -61,11 +61,11 @@ Then open any notebook under `notebooks/` and run all cells. A `.devcontainer/de
 
 | Quantity | Value | Notes |
 |----------|-------|-------|
-| r_init | 3.5% | Pre-shock BGP, calibration target |
-| r_terminal | 1.5% | Post-shock BGP |
-| Trough | ~0.7% | Year ~2028 |
-| Overshoot | ~84bp | Below new BGP |
-| Peak-to-trough decline | ~3pp | Share of observed 4pp decline |
+| r_init | 3.0% | Pre-shock BGP, calibration target |
+| r_terminal | 1.6% | Post-shock BGP |
+| Trough | ~0.8% | Year ~2031 |
+| Overshoot | ~71bp | Below new BGP |
+| Peak-to-trough decline | ~2.2pp | Share of observed 4pp decline |
 
 ## Calibration
 
@@ -74,12 +74,12 @@ Then open any notebook under `notebooks/` and run all cells. A `.devcontainer/de
 | alpha | 0.33 | Standard capital share |
 | sigma | 0.4 | Production literature |
 | delta | 0.05 | Standard depreciation |
-| beta | 0.946 | Calibrated to r_init = 3.5% |
+| beta | 0.9634 | Calibrated to r_init = 3.0% |
 | theta | 2.0 | Standard inverse EIS |
 | gamma | 0.015 | German per-capita GDP growth |
 | J | 80 | Lifespan |
 | chi | 20 | Age entering labour market |
-| psi | 60 | Retirement age |
+| psi | 65 | Retirement age (working age 20–65) |
 
 ## References
 

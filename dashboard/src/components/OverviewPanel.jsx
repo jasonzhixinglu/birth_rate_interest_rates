@@ -17,6 +17,7 @@ export default function OverviewPanel() {
   const [manifest, setManifest] = useState(null)
   const [slug, setSlug] = useSessionState('brir-country', 'germany')
   const [year, setYear] = useSessionState('brir-year', 2028)
+  const [navMode, setNavMode] = useSessionState('brir-navmode', 'capital')
   const [playing, setPlaying] = useState(false)
   const cache = useRef({})
   const [data, setData] = useState(null)
@@ -86,20 +87,45 @@ export default function OverviewPanel() {
     return <div className="flex items-center justify-center h-64 text-sm text-slate-500">Loading model output…</div>
   }
 
-  const downloadRate = () => downloadCSV(`${slug}_rate_path.csv`, data.rPath,
-    [{ key: 'year', label: 'year' }, { key: 'r', label: 'real_rate_pct' }])
+  const downloadRate = () => {
+    const kByYear = Object.fromEntries(data.kPath.map(p => [p.year, p.k]))
+    const rows = data.rPath.map(p => ({ year: p.year, r: p.r, k: kByYear[p.year] }))
+    downloadCSV(`${slug}_transition.csv`, rows, [
+      { key: 'year', label: 'year' },
+      { key: 'r', label: 'real_rate_pct' },
+      { key: 'k', label: 'capital_per_worker' },
+    ])
+  }
   const downloadSnapshot = () => {
     const rows = data.ages.map(a => ({ age: a, pop: snap.pop[a], assetPc: snap.assetPc[a], wealth: snap.pop[a] * snap.assetPc[a] }))
     downloadCSV(`${slug}_${year}_age_profile.csv`, rows,
       [{ key: 'age', label: 'age' }, { key: 'pop', label: 'cohort_size' }, { key: 'assetPc', label: 'assets_per_capita' }, { key: 'wealth', label: 'aggregate_assets' }])
   }
 
-  const statCards = [
-    { label: `Real rate · ${year}`, value: pct(rAtYear), tone: 'val-neutral' },
-    { label: 'Old-age dependency', value: stats ? `${stats.dependency.toFixed(0)}%` : '—', tone: 'val-positive' },
-    { label: 'Capital / worker', value: stats ? num(stats.capPerWorker, 2) : '—', tone: 'val-neutral' },
-    { label: `Trough`, value: `${pct(meta.trough.value)}`, sub: meta.trough.year, tone: 'val-negative' },
-  ]
+  // Navigator series — capital per worker is the proximate driver of r.
+  const nav = navMode === 'capital'
+    ? {
+        series: data.kPath, valueKey: 'k', unit: '',
+        refs: [{ value: meta.kInit, label: 'k init' }, { value: meta.kTerminal, label: 'k terminal' }],
+        marker: { year: meta.kPeak.year, value: meta.kPeak.value, label: 'peak' },
+        title: `Capital per worker · ${meta.name}`,
+      }
+    : {
+        series: data.rPath, valueKey: 'r', unit: '%',
+        refs: [{ value: meta.rInit, label: 'r init' }, { value: meta.rTerminal, label: 'r terminal' }],
+        marker: { year: meta.trough.year, value: meta.trough.value, label: 'trough' },
+        title: `Real interest rate · ${meta.name}`,
+      }
+
+  const capCard = { label: `Capital / worker · ${year}`, value: stats ? num(stats.capPerWorker, 2) : '—', tone: 'val-neutral' }
+  const rateCard = { label: `Real rate · ${year}`, value: pct(rAtYear), tone: 'val-neutral' }
+  const depCard = { label: 'Old-age dependency', value: stats ? `${stats.dependency.toFixed(0)}%` : '—', tone: 'val-positive' }
+  const extremeCard = navMode === 'capital'
+    ? { label: 'Peak capital', value: num(meta.kPeak.value, 2), sub: meta.kPeak.year, tone: 'val-positive' }
+    : { label: 'Trough', value: pct(meta.trough.value), sub: meta.trough.year, tone: 'val-negative' }
+  const statCards = navMode === 'capital'
+    ? [capCard, rateCard, depCard, extremeCard]
+    : [rateCard, capCard, depCard, extremeCard]
 
   return (
     <div className="flex flex-col lg:flex-row gap-4 md:h-full md:overflow-hidden">
@@ -172,6 +198,7 @@ export default function OverviewPanel() {
             <Row k="TFR pre → post" v={`${meta.tfrHigh} → ${meta.tfrLow}`} />
             <Row k="Fertility shock" v={meta.shockYear} />
             <Row k="r init / terminal" v={`${meta.rInit}% / ${meta.rTerminal}%`} />
+            <Row k="Pop. growth pre" v={`${meta.gHigh}%`} />
             <Row k="Pop. growth post" v={`${meta.gLow}%`} />
           </div>
 
@@ -192,7 +219,7 @@ export default function OverviewPanel() {
             <div className="label mb-1">Download</div>
             <button onClick={downloadRate}
               className="w-full text-xs py-1.5 px-2 rounded-md font-medium text-left bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center gap-1.5">
-              <DownloadIcon /> Rate path (CSV)
+              <DownloadIcon /> Transition r &amp; k (CSV)
             </button>
             <button onClick={downloadSnapshot}
               className="w-full text-xs py-1.5 px-2 rounded-md font-medium text-left bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 flex items-center gap-1.5">
@@ -219,17 +246,37 @@ export default function OverviewPanel() {
 
         {/* navigator */}
         <div className="panel p-3 flex flex-col md:flex-2 md:min-h-[170px]">
-          <div className="flex items-baseline justify-between mb-1">
-            <span className="label">Real interest rate transition · {meta.name}</span>
-            <span className="hidden sm:block text-xs text-slate-400 dark:text-slate-600">Click or drag to select a year</span>
+          <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="label truncate">{nav.title}</span>
+              <span className="hidden sm:block text-xs text-slate-400 dark:text-slate-600 shrink-0">· click or drag to select a year</span>
+            </div>
+            <div className="flex items-center gap-1 shrink-0">
+              {[['capital', 'Capital / worker'], ['rate', 'Interest rate']].map(([m, lbl]) => (
+                <button
+                  key={m}
+                  onClick={() => setNavMode(m)}
+                  className={`text-xs px-2.5 py-0.5 rounded-md font-medium transition-all ${
+                    navMode === m
+                      ? 'bg-indigo-600 text-white'
+                      : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
+                  }`}
+                >{lbl}</button>
+              ))}
+            </div>
           </div>
           <div className="flex-1 min-h-[150px]">
             <RateNavigatorChart
-              rPath={data.rPath} shockYear={meta.shockYear} trough={meta.trough}
-              rInit={meta.rInit} rTerminal={meta.rTerminal}
+              series={nav.series} valueKey={nav.valueKey} unit={nav.unit}
+              refs={nav.refs} marker={nav.marker} shockYear={meta.shockYear}
               selectedYear={year} onSelectYear={onSelectYear} color={meta.color}
             />
           </div>
+          {navMode === 'capital' && (
+            <p className="hidden sm:block text-[11px] text-slate-500 dark:text-slate-500 mt-1 leading-snug">
+              The savings glut raises capital per worker; a higher capital stock has a lower marginal product, so the equilibrium interest rate falls. Capital peaks ({meta.kPeak.year}) exactly when the rate troughs.
+            </p>
+          )}
         </div>
 
         {/* linked snapshot charts */}
