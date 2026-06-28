@@ -84,7 +84,7 @@ export default function CrossCountryPanel() {
       <div className="panel p-4 overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="text-left label">
+            <tr className="text-left label whitespace-nowrap">
               <th className="py-1.5 pr-4 font-medium">Country</th>
               <th className="py-1.5 pr-4 font-medium">TFR pre → post</th>
               <th className="py-1.5 pr-4 font-medium">Shock</th>
@@ -97,7 +97,7 @@ export default function CrossCountryPanel() {
             {countries.map(d => {
               const m = d.meta
               return (
-                <tr key={m.slug} className="border-t border-slate-200 dark:border-slate-800">
+                <tr key={m.slug} className="border-t border-slate-200 dark:border-slate-800 whitespace-nowrap">
                   <td className="py-1.5 pr-4">
                     <span className="inline-flex items-center gap-2">
                       <span className="w-2.5 h-2.5 rounded-full" style={{ background: m.color }} />

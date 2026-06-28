@@ -5,6 +5,7 @@ import {
 } from 'recharts'
 import { getTheme, getTooltipStyle } from '../../lib/chartTheme.js'
 import { useDarkMode } from '../../lib/useDarkMode.jsx'
+import { niceTicks } from '../../lib/format.js'
 
 const MODES = {
   aggregate: {
@@ -30,7 +31,7 @@ export default function AssetByAgeChart({ ages, pop, assetPc, chi, psi, assetPcM
   const cfg = MODES[mode]
   const color = theme.colors[cfg.colorKey]
   const data = ages.map(a => ({ age: a, assetPc: assetPc[a], wealth: pop[a] * assetPc[a] }))
-  const yMax = mode === 'aggregate' ? wealthMax : assetPcMax
+  const { ticks: yt, niceMax } = niceTicks(mode === 'aggregate' ? wealthMax : assetPcMax)
 
   return (
     <div className="flex flex-col h-full">
@@ -68,7 +69,7 @@ export default function AssetByAgeChart({ ages, pop, assetPc, chi, psi, assetPcM
               label={{ value: 'age', position: 'insideBottomRight', offset: -2, fill: ui.tickLabel, fontSize: 10 }}
             />
             <YAxis
-              domain={[0, Math.ceil(yMax * 1.05 * 10) / 10]}
+              domain={[0, niceMax]} ticks={yt}
               tick={{ fill: ui.tickLabel, fontSize: ui.tickFontSize }}
               stroke={ui.axis} tickLine={false} width={40}
             />

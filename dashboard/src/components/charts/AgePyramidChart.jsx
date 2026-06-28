@@ -4,6 +4,7 @@ import {
 } from 'recharts'
 import { getTheme, getTooltipStyle } from '../../lib/chartTheme.js'
 import { useDarkMode } from '../../lib/useDarkMode.jsx'
+import { niceTicks } from '../../lib/format.js'
 
 // Cohort sizes by age at the selected year. Bars are coloured by life stage
 // so the baby-boom hump and its march toward retirement are visible as you
@@ -16,6 +17,7 @@ export default function AgePyramidChart({ ages, pop, chi, psi, popMax }) {
   if (!pop) return <div className="flex items-center justify-center h-full text-xs text-slate-500">—</div>
 
   const data = ages.map(a => ({ age: a, pop: pop[a] }))
+  const { ticks: yt, niceMax } = niceTicks(popMax)
   const colorFor = (age) =>
     age < chi ? theme.colors.muted
       : age < psi ? theme.colors.primary
@@ -34,7 +36,7 @@ export default function AgePyramidChart({ ages, pop, chi, psi, popMax }) {
           label={{ value: 'age', position: 'insideBottomRight', offset: -2, fill: ui.tickLabel, fontSize: 10 }}
         />
         <YAxis
-          domain={[0, Math.ceil(popMax * 1.05 * 100) / 100]}
+          domain={[0, niceMax]} ticks={yt}
           tick={{ fill: ui.tickLabel, fontSize: ui.tickFontSize }}
           stroke={ui.axis} tickLine={false} width={40}
         />

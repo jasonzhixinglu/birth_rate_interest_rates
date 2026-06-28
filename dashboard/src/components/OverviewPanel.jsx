@@ -221,7 +221,7 @@ export default function OverviewPanel() {
         <div className="panel p-3 flex flex-col md:flex-2 md:min-h-[170px]">
           <div className="flex items-baseline justify-between mb-1">
             <span className="label">Real interest rate transition · {meta.name}</span>
-            <span className="text-xs text-slate-400 dark:text-slate-600">Click or drag to select a year</span>
+            <span className="hidden sm:block text-xs text-slate-400 dark:text-slate-600">Click or drag to select a year</span>
           </div>
           <div className="flex-1 min-h-[150px]">
             <RateNavigatorChart
